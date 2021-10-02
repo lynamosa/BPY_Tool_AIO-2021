@@ -1,0 +1,322 @@
+﻿<UserControl x:Class="BPYmergeTool.DockerUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BPYmergeTool"
+             mc:Ignorable="d" 
+             MinWidth="225">
+    <Grid Margin="0,0,0,0" VerticalAlignment="Top">
+        <Grid.Resources>
+            <Style TargetType="Expander">
+                <Setter Property="Background" Value="#FFA9D7FF"/>
+            </Style>
+            <Style TargetType="Grid">
+                <Setter Property="Background" Value="White"/>
+            </Style>
+        </Grid.Resources>
+        <TabControl BorderThickness="0">
+            <TabItem Header="Sort" Height="23" VerticalAlignment="Top" Padding="2,1">
+                <Grid>
+                    <StackPanel Margin="4">
+                        <ComboBox Name="st_type" Margin="0,4" VerticalAlignment="Top" Width="Auto" SelectedIndex="2">
+                            <ListBoxItem Content="Tất cả các đối tượng" IsSelected="True"/>
+                            <ListBoxItem Content="Chỉ đối tượng được chọn"/>
+                            <ListBoxItem Content="Tất cả các trang"/>
+                            <ListBoxItem Content="Chỉ trang chẵn"/>
+                            <ListBoxItem Content="Chỉ trang lẻ"/>
+                        </ComboBox>
+                        <Separator />
+                        <Expander Name="hr" IsExpanded="True" HorizontalContentAlignment="Stretch">
+                            <Expander.Header>
+                                <DockPanel Margin="0, 0, 0, 6" HorizontalAlignment="Stretch" MaxWidth="350" Width="{Binding ElementName=hr, Path=ActualWidth}">
+                                    <Button Name="st_btn_pg_rotate" DockPanel.Dock="Right" Content="Xoay" Click="st_btn_pg_rotate_Click_1" HorizontalAlignment="Right"  Margin="0,0,30,0"/>
+                                    <TextBlock FontWeight="Bold" Text="Khổ giấy" VerticalAlignment="Bottom" />
+                                </DockPanel>
+                            </Expander.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20*"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="20*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" Grid.Row="0" Name="st_pg_width" Height="23" TextWrapping="NoWrap" Text="297" Width="120" HorizontalContentAlignment="Center" ToolTip="Chiều rộng"/>
+                                <Label Grid.Column="1" Grid.Row="0" Content="x" Padding="10,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="2" Grid.Row="0" Name="st_pg_height" Height="23" TextWrapping="NoWrap" Text="210" Width="120" HorizontalContentAlignment="Center" ToolTip="Chiều cao"/>
+                            </Grid>
+                        </Expander>
+                        <Expander Name="hr2" IsExpanded="True" HorizontalContentAlignment="Stretch">
+                            <Expander.Header>
+                                <DockPanel Margin="0, 0, 0, 6" HorizontalAlignment="Stretch" MaxWidth="350" Width="{Binding ElementName=hr2, Path=ActualWidth}">
+                                    <Button Name="st_btn_getItemSize" DockPanel.Dock="Right" Content="Get selected" Click="st_btn_getItemSize_Click" HorizontalAlignment="Right"  Margin="0,0,30,0"/>
+                                    <TextBlock FontWeight="Bold" Text="Kích thước đối tượng" VerticalAlignment="Bottom" />
+                                </DockPanel>
+                            </Expander.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20*"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="20*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" Grid.Row="0" Name="st_item_width" Height="23" TextWrapping="NoWrap" Text="93" Width="120" HorizontalContentAlignment="Center" ToolTip="Chiều rộng"/>
+                                <Label Grid.Column="1" Grid.Row="0" Content="x" Padding="10,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="2" Grid.Row="0" Name="st_item_height" Height="23" TextWrapping="NoWrap" Text="57" Width="120" HorizontalContentAlignment="Center" ToolTip="Chiều cao"/>
+                            </Grid>
+                        </Expander>
+                        <Expander Header="Sắp xếp" VerticalAlignment="Center" IsExpanded="True">
+                            <Grid >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="26"/>
+                                    <RowDefinition Height="26"/>
+                                    <RowDefinition Height="34"/>
+                                    <RowDefinition Height="26"/>
+                                    <RowDefinition Height="26"/>
+                                    <RowDefinition Height="26"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Grid.Row="0" Content="Chuẩn" />
+                                <CheckBox Name="st_chk_ro" Grid.Column="0" Grid.Row="1" Content="Xoay 90" VerticalAlignment="Center" ToolTip="Đánh dấu nếu cho phép xoay đối tượng khi xếp" IsChecked="True"/>
+                                <Label Grid.Column="0" Grid.Row="3" Content="Khoảng cách" VerticalAlignment="Center" />
+                                <Label Grid.Column="2" Grid.Row="0" Content="x" Padding="10,0"/>
+                                <Label Grid.Column="2" Grid.Row="1" Content="x" Padding="10,0"/>
+                                <TextBox Name="st_x" Grid.Column="1" Grid.Row="0" TextWrapping="NoWrap" Text="2" HorizontalContentAlignment="Center" ToolTip="Số lượng đối tượng theo chiều ngang" Margin="0,2"/>
+                                <TextBox Name="st_y" Grid.Column="3" Grid.Row="0" TextWrapping="NoWrap" Text="5" HorizontalContentAlignment="Center" ToolTip="Số lượng đối tượng theo chiều dọc" Margin="0,2"/>
+                                <TextBox Name="st_rx" Grid.Column="1" Grid.Row="1" TextWrapping="NoWrap" Text="0" HorizontalContentAlignment="Center" ToolTip="Số lượng đối tượng theo chiều ngang" Margin="0,2"/>
+                                <TextBox Name="st_ry" Grid.Column="3" Grid.Row="1" TextWrapping="NoWrap" Text="0" HorizontalContentAlignment="Center" ToolTip="Số lượng đối tượng theo chiều dọc" Margin="0,2"/>
+                                <Button Name="st_btn_SortCount" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" Content="Tính số lượng" ToolTip="Tính số lượng tối ưu mà khổ giấy có thể xếp được" Margin="0,0,0,8" Click="st_btn_SortCount_click"/>
+                                <TextBox Name="st_space" Grid.Column="1" Grid.Row="3" TextWrapping="NoWrap" Text="12" HorizontalContentAlignment="Center" ToolTip="Khoảng cách giữa các nhóm" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4">
+                                    <RadioButton Name="st_chk_pg1" Content="Xếp theo nhóm" VerticalAlignment="Center" GroupName="pageOrgroup" IsChecked="True" Margin="0,0,20,0"/>
+                                    <RadioButton Name="st_chk_pg" Content="Xếp theo Trang" VerticalAlignment="Center" GroupName="pageOrgroup" HorizontalAlignment="Right"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="4">
+                                    <RadioButton Name="st_chk_dr1" Content="Xếp trái -> phải" VerticalAlignment="Center" GroupName="sDirect" IsChecked="True" Margin="0,0,20,0"/>
+                                    <RadioButton Name="st_chk_dr" Content="Xếp trên -> dưới" VerticalAlignment="Center" GroupName="sDirect" HorizontalAlignment="Right"/>
+                                </StackPanel>
+                            </Grid>
+                        </Expander>
+                        <Button Name="st_btn_sort" Content="Xếp" Height="40" Click="st_btn_sort_Click"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Move" Padding="2,1" HorizontalAlignment="Left" Width="40">
+                <StackPanel>
+                    <Expander IsExpanded="True" ToolTip="Đổi kích thước những đối tượng đang được chọn">
+                        <Expander.Header>
+                            <Run Text="Đổi kích thước đối tượng" FontWeight="Bold"/>
+                        </Expander.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="26"/>
+                                <RowDefinition Height="26"/>
+                                <RowDefinition Height="26"/>
+                                <RowDefinition Height="32"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40*"/>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="70"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Name="sz_width" Grid.Column="0" Grid.Row="0" TextWrapping="NoWrap" Text="90" HorizontalContentAlignment="Center" ToolTip="Chiều rộng" Margin="0,2"/>
+                            <TextBox Name="sz_height" Grid.Column="0" Grid.Row="1" TextWrapping="NoWrap" Text="55" HorizontalContentAlignment="Center" ToolTip="Chiều cao" Margin="0,2"/>
+                            <CheckBox Name="sz_chk_rotate" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Content="Cho phép xoay đối tượng" VerticalAlignment="Center" />
+                            <Button Name="sz_btn_scaleX" Grid.Column="1" Grid.Row="0" Content="Scale" ToolTip="Kéo kích thước theo tỷ lệ chiều rộng" Height="22" Margin="3,0" Tag="1"  Click="sz_btn_scale_auto"/>
+                            <Button Name="sz_btn_fixX" Grid.Column="2" Grid.Row="0" Content="Fix" ToolTip="Đặt kích thước theo chiều rộng" Height="22" Tag="3" Click="sz_btn_scale_auto"/>
+                            <Button Name="sz_btn_scaleY" Grid.Column="1" Grid.Row="1" Content="Scale" ToolTip="Kéo kích thước theo tỷ lệ chiều cao" Height="22" Margin="3,0" Tag="2" Click="sz_btn_scale_auto"/>
+                            <Button Name="sz_btn_fixY" Grid.Column="2" Grid.Row="1" Content="Fix" ToolTip="Đặt kích thước theo chiều cao" Height="22" Tag="4" Click="sz_btn_scale_auto"/>
+                            <StackPanel Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" Orientation="Horizontal" Width="Auto" HorizontalAlignment="Center" Margin="0,0,0,6">
+                                <Button Name="sz_btn_set" Content="Chính xác" Margin="2,0" Padding="3,0" Tag="7" Click="sz_btn_scale_auto"/>
+                                <Button Name="sz_btn_min" Content="Tăng vừa" Margin="2,0" Padding="3,0" Tag="5" Click="sz_btn_scale_auto"/>
+                                <Button Name="sz_btn_max" Content="Tăng tối đa" Margin="2,0" Padding="3,0" Tag="6" Click="sz_btn_scale_auto"/>
+                            </StackPanel>
+                        </Grid>
+                    </Expander>
+                    <Expander VerticalAlignment="Top" IsExpanded="False">
+                        <Expander.Header>
+                            <Run Text="Đổi kích thước theo điều kiện" FontWeight="Bold" />
+                        </Expander.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="36"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40*"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="40"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0" Content="Thứ tự đối tượng" />
+                            <ComboBox Name="sz_cb_cond_type" Grid.Column="0" Grid.Row="1" Height="24" ToolTip="Thuộc tính để kiểm tra" SelectedIndex="0">
+                                <ListBoxItem Content="Chiều rộng"/>
+                                <ListBoxItem Content="Chiều cao"/>
+                            </ComboBox>
+                            <Label Grid.Column="0" Grid.Row="2" Content="Hướng điều chỉnh" />
+                            <Label Grid.Column="0" Grid.Row="3" Content="Kích thước mới" />
+                            <Label Grid.Column="3" Grid.Row="3" Content="mm" />
+                            <TextBox Name="sz_obj_Index" Grid.Column="1" Grid.Row="0" TextWrapping="NoWrap" Text="1" HorizontalContentAlignment="Center" ToolTip="Thứ tự đối tượng (index)" Height="24" Margin="4,0,4,0" VerticalContentAlignment="Center"/>
+                            <Button Name="sz_btn_getIndex" Grid.Column="2" Grid.Row="0" Content="Get" ToolTip="Lấy thứ tự của đối tượng trong trang" Height="24" Click="sz_btn_getIndex_Click"/>
+                            <ComboBox Name="sz_cb_type" Grid.Column="1" Grid.Row="1" Height="24" Margin="4,0,4,0" VerticalContentAlignment="Center" SelectedIndex="0">
+                                <ListBoxItem Content="Lớn hơn"/>
+                                <ListBoxItem Content="Nhỏ hơn"/>
+                                <ListBoxItem Content="Bằng"/>
+                            </ComboBox>
+                            <TextBox Name="sz_SizeIf" Grid.Column="2" Grid.Row="1" TextWrapping="NoWrap" Text="1" HorizontalContentAlignment="Center" ToolTip="Kích thước theo điều kiện" Height="24" VerticalContentAlignment="Center"/>
+                            <ComboBox Name="sz_cb_direct" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Margin="4,0,0,0" SelectedIndex="0" Height="24">
+                                <ListBoxItem Content="Canh trái"/>
+                                <ListBoxItem Content="Canh giữa"/>
+                                <ListBoxItem Content="Canh phải"/>
+                            </ComboBox>
+                            <TextBox Name="sz_obj_newsize" Grid.Column="1" Grid.Row="3" TextWrapping="NoWrap" Text="1" HorizontalContentAlignment="Center" ToolTip="Thiết lập kích thước mới cho đối tượng" Height="24" Margin="0,0,4,0" VerticalContentAlignment="Center"/>
+                            <Button Name="sz_btn_size" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3" Content="Bắt đầu" Padding="3" Click="sz_btn_size_Click" Margin="0,0,0,6"/>
+                        </Grid>
+                    </Expander>
+                    <Expander VerticalAlignment="Top" IsExpanded="False">
+                        <Expander.Header>
+                            <Run Text="Canh đều đối tượng (Trang)" FontWeight="Bold" />
+                        </Expander.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="36"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40*"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="30"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0" Content="Đối tượng cố định" />
+                            <Label Grid.Column="0" Grid.Row="1" Content="Đối tượng di chuyển" />
+                            <Label Grid.Column="0" Grid.Row="2" Content="Hướng ngang" />
+                            <Label Grid.Column="0" Grid.Row="3" Content="Hướng dọc" />
+                            <TextBox Name="sz_al_ori_index" Grid.Column="1" Grid.Row="0" TextWrapping="NoWrap" Text="1" HorizontalContentAlignment="Center" ToolTip="Thứ tự đối tượng (index)" Height="24" Margin="0,0,4,0" VerticalContentAlignment="Center"/>
+                            <Button Name="sz_btn_getIndex2" Grid.Column="2" Grid.Row="0" Content="Get" ToolTip="Lấy thứ tự của đối tượng trong trang" Height="24"/>
+                            <TextBox Name="sz_al_des_index" Grid.Column="1" Grid.Row="1" TextWrapping="NoWrap" Text="2" HorizontalContentAlignment="Center" ToolTip="Thứ tự đối tượng (index)" Height="24" Margin="0,0,4,0" VerticalContentAlignment="Center"/>
+                            <Button Name="sz_btn_getIndex3" Grid.Column="2" Grid.Row="1" Content="Get" ToolTip="Lấy thứ tự của đối tượng trong trang" Height="24"/>
+                            <ComboBox Name="sz_cb_hoz" Grid.Column="1" Grid.Row="2" Height="24" Margin="0,0,4,0" SelectedIndex="0">
+                                <ListBoxItem Content="Canh trái"/>
+                                <ListBoxItem Content="Canh phải"/>
+                                <ListBoxItem Content="Canh giữa"/>
+                            </ComboBox>
+                            <CheckBox Name="sz_chk_hoz" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="True"/>
+                            <ComboBox Name="sz_cb_ver" Grid.Column="1" Grid.Row="3" Height="24" Margin="0,0,4,0" SelectedIndex="1">
+                                <ListBoxItem Tag="1" Content="Canh trên"/>
+                                <ListBoxItem Tag="2" Content="Canh dưới"/>
+                                <ListBoxItem Tag="3" Content="Canh giữa"/>
+                            </ComboBox>
+                            <CheckBox Name="sz_chk_ver" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Button Name="sz_btn_align" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3" Content="Bắt đầu" Padding="3" Click="sz_btn_align_Click"/>
+                        </Grid>
+                    </Expander>
+                    <Expander VerticalAlignment="Top" IsExpanded="True">
+                        <Expander.Header>
+                            <Run Text="Canh đều đối tượng" FontWeight="Bold" />
+                        </Expander.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="7"/>
+                                <ColumnDefinition Width="33"/>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Button Name="sz_att_left" Grid.Column="0" Grid.Row="1" Content="LEFT" ToolTip="Canh theo cạnh trái" Click="sz_att_left_Click" Grid.ColumnSpan="2"></Button>
+                            <Button Name="sz_att_center" Grid.Column="2" Grid.Row="1" Content="CENTER" Click="sz_att_left_Click"></Button>
+                            <Button Name="sz_att_right" Grid.Column="3" Grid.Row="1" Content="RIGHT" Click="sz_att_left_Click"></Button>
+                            <Button Name="sz_att_hoz" Grid.Column="4" Grid.Row="1" Content="HOR" Click="sz_att_left_Click"></Button>
+                            <Button Name="sz_att_top" Grid.Column="0" Grid.Row="2" Content="TOP" Click="sz_att_left_Click" Grid.ColumnSpan="2"></Button>
+                            <Button Name="sz_att_mid" Grid.Column="2" Grid.Row="2" Content="MID" Click="sz_att_left_Click"></Button>
+                            <Button Name="sz_att_bottom" Grid.Column="3" Grid.Row="2" Content="BOTTOM" Click="sz_att_left_Click"></Button>
+                            <Button Name="sz_att_ver" Grid.Column="4" Grid.Row="2" Content="VER" Click="sz_att_left_Click"></Button>
+                            <TextBox Name="sz_hor" Grid.Column="5" Grid.Row="1" TextWrapping="NoWrap" Text="2" HorizontalContentAlignment="Center" ToolTip="Khoảng cách" Height="24" Margin="0,8,4,8" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBox Name="sz_ver" Grid.Column="5" Grid.Row="2" TextWrapping="NoWrap" Text="2" HorizontalContentAlignment="Center" ToolTip="Khoảng cách" Height="24" Margin="0,8,4,8" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                            <Label Grid.Column="0" Grid.ColumnSpan="4" Content="Sắp xếp theo:" VerticalAlignment="Center" Margin="0,7"/>
+                            <ComboBox Name="sz_cb_sortType" Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2" Height="24" Margin="0,8,4,8" ToolTip="Thuộc tính được sắp xếp" SelectedIndex="0">
+                                <ListBoxItem Content="Index" IsSelected="True"/>
+                                <ListBoxItem Content="Lề trái"/>
+                                <ListBoxItem Content="Lề phải"/>
+                                <ListBoxItem Content="Lề trên"/>
+                                <ListBoxItem Content="Lề dưới"/>
+                                <ListBoxItem Content="Trục dọc"/>
+                                <ListBoxItem Content="Trục ngang"/>
+                                <ListBoxItem Content="Chiều rộng"/>
+                                <ListBoxItem Content="Chiều cao"/>
+                            </ComboBox>
+                            <ComboBox Name="sz_cb_sortdesc" Grid.Column="5" Grid.Row="0" Height="24" Margin="0,8,4,8" ToolTip="Thứ tự các đối tượng" SelectedIndex="0">
+                                <ListBoxItem Content="Tăng"/>
+                                <ListBoxItem Content="Giảm"/>
+                            </ComboBox>
+                        </Grid>
+                    </Expander>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Tool" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="57" Padding="2,1" IsSelected="True">
+                <StackPanel>
+                    <Expander VerticalAlignment="Top" IsExpanded="True">
+                        <Expander.Header>
+                            <Run Text="Crack font" FontWeight="Bold" />
+                        </Expander.Header>
+                        <StackPanel Background="White">
+                            <Button Click="btn_crackFont_Click" Tag="1" Content="Tất cả" Height="32" Padding="4" Margin="8,8,8,2"/>
+                            <Button Click="btn_crackFont_Click" Tag="2" Content="Trang hiện tại" Height="32" Padding="4" Margin="8,2,8,2"/>
+                            <Button Click="btn_crackFont_Click" Tag="3" Content="Đối tượng đang chọn" Height="32" Padding="4" Margin="8,2,8,8"/>
+                        </StackPanel>
+                    </Expander>
+                    <Expander VerticalAlignment="Top" IsExpanded="True">
+                        <Expander.Header>
+                            <Run Text="Resample Image" FontWeight="Bold" />
+                        </Expander.Header>
+                        <StackPanel Background="White">
+                            <Grid Margin="8,8,8,4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Max DPI image" Grid.Column="0" Height="24"/>
+                                <TextBox Name="txt_maxdpi" Grid.Column="1" Height="24" Text="300" TextAlignment="Center" Padding="4" VerticalContentAlignment="Center"/>
+                            </Grid>
+                            <Button Name="btn_resampImg" Click="btn_resampImg_Click" Content="Resample" Height="32" Padding="4" Margin="8,2,8,8"/>
+                        </StackPanel>
+                    </Expander>
+                    <Expander VerticalAlignment="Top" IsExpanded="True">
+                        <Expander.Header>
+                            <Run Text="Barcode -> Vector" FontWeight="Bold" />
+                        </Expander.Header>
+                        <StackPanel Background="White">
+                            <Button Name="btn_barcode2vector" Click="btn_barcode2vector_Click" Content="Barcode -> Vector" Height="45" Padding="4" Margin="8"/>
+                        </StackPanel>
+                    </Expander>
+
+
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Cfont" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="57" Padding="2,1">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+
+
+</UserControl>
