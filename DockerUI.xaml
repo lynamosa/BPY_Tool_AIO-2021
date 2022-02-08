@@ -6,6 +6,10 @@
              xmlns:local="clr-namespace:BPYmergeTool"
              mc:Ignorable="d" 
              MinWidth="225">
+    <UserControl.Resources>
+        <local:SortTypeConvert x:Key="mySortTypeConvert"/>
+
+    </UserControl.Resources>
     <Grid Margin="0,0,0,0" VerticalAlignment="Top">
         <Grid.Resources>
             <Style TargetType="Expander">
@@ -16,21 +20,116 @@
             </Style>
         </Grid.Resources>
         <TabControl BorderThickness="0">
-            <TabItem Header="Sort" Height="23" VerticalAlignment="Top" Padding="2,1">
+            <TabItem Header="Sort" Height="23" VerticalAlignment="Top" Padding="2,1" IsSelected="True">
                 <Grid>
                     <StackPanel Margin="4">
-                        <ComboBox Name="st_type" Margin="0,4" VerticalAlignment="Top" Width="Auto" SelectedIndex="2">
-                            <ListBoxItem Content="Tất cả các đối tượng" IsSelected="True"/>
+                        <ComboBox Name="st_type" Margin="0,4" VerticalAlignment="Top" Width="Auto" SelectedIndex="0">
+                            <ListBoxItem Content="Tất cả các đối tượng"/>
                             <ListBoxItem Content="Chỉ đối tượng được chọn"/>
                             <ListBoxItem Content="Tất cả các trang"/>
-                            <ListBoxItem Content="Chỉ trang chẵn"/>
-                            <ListBoxItem Content="Chỉ trang lẻ"/>
+                            <ListBoxItem Content="Trang tùy chọn: "/>
                         </ComboBox>
-                        <Separator />
+                        <StackPanel Visibility="{Binding ElementName=st_type,Path=SelectedIndex,Converter={StaticResource mySortTypeConvert}, ConverterParameter=3}">
+                            <Grid Margin="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Trang:" Margin="0,0,5,0"/>
+                                <TextBox Name="st_custom_page" Grid.Column="1" VerticalContentAlignment="Center"></TextBox>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Margin="10,3,10,3" Visibility="{Binding ElementName=st_type,Path=SelectedIndex,Converter={StaticResource mySortTypeConvert}, ConverterParameter=2}">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type ToggleButton}">
+                                    <Style.BasedOn>
+                                        <Style TargetType="{x:Type ButtonBase}">
+                                            <Setter Property="FocusVisualStyle">
+                                                <Setter.Value>
+                                                    <Style>
+                                                        <Setter Property="Control.Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate>
+                                                                    <Rectangle Margin="2" SnapsToDevicePixels="True" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="Background" Value="#FF3AB3FF"/>
+                                            <Setter Property="BorderBrush" Value="#FF613AFF"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                                            <Setter Property="BorderThickness" Value="1"/>
+                                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                            <Setter Property="Padding" Value="1"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type ButtonBase}">
+                                                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="Button.IsDefaulted" Value="True">
+                                                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Background" TargetName="border" Value="#FF7253F0"/>
+                                                                <Setter Property="BorderBrush" TargetName="border" Value="#FF3AB3FF"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsPressed" Value="True">
+                                                                <Setter Property="Background" TargetName="border" Value="#FF7253F0"/>
+                                                                <Setter Property="BorderBrush" TargetName="border" Value="#FF3AB3FF"/>
+                                                            </Trigger>
+                                                            <Trigger Property="ToggleButton.IsChecked" Value="True">
+                                                                <Setter Property="Background" TargetName="border" Value="#FF7253F0"/>
+                                                                <Setter Property="BorderBrush" TargetName="border" Value="#FF3AB3FF"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsEnabled" Value="False">
+                                                                <Setter Property="Background" TargetName="border" Value="#FF7253F0"/>
+                                                                <Setter Property="BorderBrush" TargetName="border" Value="#FF3AB3FF"/>
+                                                                <Setter Property="Foreground" Value="#FF838383"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Style.BasedOn>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition MinHeight="26"/>
+                                    <RowDefinition MinHeight="30"/>
+                                    <RowDefinition MinHeight="26"/>
+                                </Grid.RowDefinitions>
+                                <RadioButton Name="lsPage1" Grid.Column="0" Content="Tất cả" GroupName="ToggleGroup" Style="{StaticResource {x:Type ToggleButton}}" IsChecked="True" Padding="4,0"/>
+                                <RadioButton Name="lspage2" Grid.Column="1" Content="Trang lẻ" GroupName="ToggleGroup" Style="{StaticResource {x:Type ToggleButton}}" Padding="4,0"/>
+                                <RadioButton Name="lspage3" Grid.Column="2" Content="Trang chẵn" GroupName="ToggleGroup" Style="{StaticResource {x:Type ToggleButton}}" Padding="4,0"/>
+                                <StackPanel Grid.ColumnSpan="3" Grid.Row="1" Orientation="Horizontal" Margin="0,6,0,0">
+                                    <Label Content="Gom đối tượng trang: " Padding="5,2,10,2"/>
+                                    <ComboBox Name="objInPage" Grid.Column="2" Grid.Row="1" SelectedIndex="1" VerticalAlignment="Center" MinWidth="80" Margin="0,4" HorizontalContentAlignment="Stretch">
+                                        <ListBoxItem Content="Không"/>
+                                        <ListBoxItem Content="Group"/>
+                                        <ListBoxItem Content="Powerclip"/>
+                                    </ComboBox>
+                                </StackPanel>
+                                <CheckBox Name="st_del_after_sort" Content="Xóa trang trắng sau khi xếp" Grid.ColumnSpan="3" Grid.Row="2" VerticalAlignment="Center" IsChecked="True"/>
+                                
+                            </Grid>
+                        </StackPanel>
+
                         <Expander Name="hr" IsExpanded="True" HorizontalContentAlignment="Stretch">
                             <Expander.Header>
                                 <DockPanel Margin="0, 0, 0, 6" HorizontalAlignment="Stretch" MaxWidth="350" Width="{Binding ElementName=hr, Path=ActualWidth}">
-                                    <Button Name="st_btn_pg_rotate" DockPanel.Dock="Right" Content="Xoay" Click="st_btn_pg_rotate_Click_1" HorizontalAlignment="Right"  Margin="0,0,30,0"/>
+                                    <Button Name="st_btn_pg_rotate" DockPanel.Dock="Right" Content="Xoay" Click="St_btn_pg_rotate_Click_1" HorizontalAlignment="Right"  Margin="0,0,30,0"/>
                                     <TextBlock FontWeight="Bold" Text="Khổ giấy" VerticalAlignment="Bottom" />
                                 </DockPanel>
                             </Expander.Header>
@@ -94,19 +193,19 @@
                                 <TextBox Name="st_y" Grid.Column="3" Grid.Row="0" TextWrapping="NoWrap" Text="5" HorizontalContentAlignment="Center" ToolTip="Số lượng đối tượng theo chiều dọc" Margin="0,2"/>
                                 <TextBox Name="st_rx" Grid.Column="1" Grid.Row="1" TextWrapping="NoWrap" Text="0" HorizontalContentAlignment="Center" ToolTip="Số lượng đối tượng theo chiều ngang" Margin="0,2"/>
                                 <TextBox Name="st_ry" Grid.Column="3" Grid.Row="1" TextWrapping="NoWrap" Text="0" HorizontalContentAlignment="Center" ToolTip="Số lượng đối tượng theo chiều dọc" Margin="0,2"/>
-                                <Button Name="st_btn_SortCount" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" Content="Tính số lượng" ToolTip="Tính số lượng tối ưu mà khổ giấy có thể xếp được" Margin="0,0,0,8" Click="st_btn_SortCount_click"/>
+                                <Button Name="st_btn_SortCount" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" Content="Tính số lượng" ToolTip="Tính số lượng tối ưu mà khổ giấy có thể xếp được" Margin="0,0,0,8" Click="St_btn_SortCount_click"/>
                                 <TextBox Name="st_space" Grid.Column="1" Grid.Row="3" TextWrapping="NoWrap" Text="12" HorizontalContentAlignment="Center" ToolTip="Khoảng cách giữa các nhóm" VerticalAlignment="Center"/>
-                                <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4">
-                                    <RadioButton Name="st_chk_pg1" Content="Xếp theo nhóm" VerticalAlignment="Center" GroupName="pageOrgroup" IsChecked="True" Margin="0,0,20,0"/>
-                                    <RadioButton Name="st_chk_pg" Content="Xếp theo Trang" VerticalAlignment="Center" GroupName="pageOrgroup" HorizontalAlignment="Right"/>
-                                </StackPanel>
                                 <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="4">
                                     <RadioButton Name="st_chk_dr1" Content="Xếp trái -> phải" VerticalAlignment="Center" GroupName="sDirect" IsChecked="True" Margin="0,0,20,0"/>
                                     <RadioButton Name="st_chk_dr" Content="Xếp trên -> dưới" VerticalAlignment="Center" GroupName="sDirect" HorizontalAlignment="Right"/>
                                 </StackPanel>
+                                <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4">
+                                    <RadioButton Name="st_chk_pg1" Content="Xếp theo nhóm" VerticalAlignment="Center" GroupName="pageOrgroup" IsChecked="True" Margin="0,0,20,0"/>
+                                    <RadioButton Name="st_chk_pg" Content="Xếp theo Trang" VerticalAlignment="Center" GroupName="pageOrgroup" HorizontalAlignment="Right"/>
+                                </StackPanel>
                             </Grid>
                         </Expander>
-                        <Button Name="st_btn_sort" Content="Xếp" Height="40" Click="st_btn_sort_Click"/>
+                        <Button Name="st_btn_sort" Content="Xếp" Height="40" Click="St_btn_sort_Click"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
@@ -272,13 +371,14 @@
                     </Expander>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Tool" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="57" Padding="2,1" IsSelected="True">
+            <TabItem Header="Tool" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="57" Padding="2,1">
                 <StackPanel>
                     <Expander VerticalAlignment="Top" IsExpanded="True">
                         <Expander.Header>
                             <Run Text="Crack font" FontWeight="Bold" />
                         </Expander.Header>
                         <StackPanel Background="White">
+                            <CheckBox Content="Đối tượng trong powerclip" Name="crFont_powerclip_chk" HorizontalAlignment="Left" IsChecked="True" Padding="4" Margin="8,8,8,2" VerticalContentAlignment="Center"/>
                             <Button Click="btn_crackFont_Click" Tag="1" Content="Tất cả" Height="32" Padding="4" Margin="8,8,8,2"/>
                             <Button Click="btn_crackFont_Click" Tag="2" Content="Trang hiện tại" Height="32" Padding="4" Margin="8,2,8,2"/>
                             <Button Click="btn_crackFont_Click" Tag="3" Content="Đối tượng đang chọn" Height="32" Padding="4" Margin="8,2,8,8"/>

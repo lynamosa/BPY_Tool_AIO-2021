@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BPYmergeTool", "BPYmergeTool.csproj", "{77EEEF4D-F100-4C43-860D-33E802A0BCEC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		X7 Debug|Any CPU = X7 Debug|Any CPU
+		X7 Release|Any CPU = X7 Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77EEEF4D-F100-4C43-860D-33E802A0BCEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77EEEF4D-F100-4C43-860D-33E802A0BCEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77EEEF4D-F100-4C43-860D-33E802A0BCEC}.X7 Debug|Any CPU.ActiveCfg = X7 Debug|Any CPU
+		{77EEEF4D-F100-4C43-860D-33E802A0BCEC}.X7 Debug|Any CPU.Build.0 = X7 Debug|Any CPU
+		{77EEEF4D-F100-4C43-860D-33E802A0BCEC}.X7 Release|Any CPU.ActiveCfg = X7 Release|Any CPU
+		{77EEEF4D-F100-4C43-860D-33E802A0BCEC}.X7 Release|Any CPU.Build.0 = X7 Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {82FB31D8-C7A2-413E-A8FC-B89F9258E02A}
+	EndGlobalSection
+EndGlobal
