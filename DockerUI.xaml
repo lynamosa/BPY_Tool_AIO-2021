@@ -211,7 +211,7 @@
             </TabItem>
             <TabItem Header="Move" Padding="2,1" HorizontalAlignment="Left" Width="40">
                 <StackPanel>
-                    <Expander IsExpanded="True" ToolTip="Đổi kích thước những đối tượng đang được chọn">
+                    <Expander IsExpanded="False" ToolTip="Đổi kích thước những đối tượng đang được chọn">
                         <Expander.Header>
                             <Run Text="Đổi kích thước đối tượng" FontWeight="Bold"/>
                         </Expander.Header>
@@ -235,13 +235,13 @@
                             <Button Name="sz_btn_scaleY" Grid.Column="1" Grid.Row="1" Content="Scale" ToolTip="Kéo kích thước theo tỷ lệ chiều cao" Height="22" Margin="3,0" Tag="2" Click="sz_btn_scale_auto"/>
                             <Button Name="sz_btn_fixY" Grid.Column="2" Grid.Row="1" Content="Fix" ToolTip="Đặt kích thước theo chiều cao" Height="22" Tag="4" Click="sz_btn_scale_auto"/>
                             <StackPanel Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" Orientation="Horizontal" Width="Auto" HorizontalAlignment="Center" Margin="0,0,0,6">
-                                <Button Name="sz_btn_set" Content="Chính xác" Margin="2,0" Padding="3,0" Tag="7" Click="sz_btn_scale_auto"/>
-                                <Button Name="sz_btn_min" Content="Tăng vừa" Margin="2,0" Padding="3,0" Tag="5" Click="sz_btn_scale_auto"/>
-                                <Button Name="sz_btn_max" Content="Tăng tối đa" Margin="2,0" Padding="3,0" Tag="6" Click="sz_btn_scale_auto"/>
+                                <Button Name="sz_btn_set" Content="Chính xác" Margin="2,0" Padding="3,0" Tag="7" Click="sz_btn_scale_auto" ToolTip="Thiết lập đối tượng theo kích thước đã cho"/>
+                                <Button Name="sz_btn_min" Content="Tăng vừa" Margin="2,0" Padding="3,0" Tag="5" Click="sz_btn_scale_auto" ToolTip="Thiết lập đối tượng theo kích thước, vẫn giữ nguyên tỷ lệ, và không lớn hơn kích thước tối đa"/>
+                                <Button Name="sz_btn_max" Content="Tăng tối đa" Margin="2,0" Padding="3,0" Tag="6" Click="sz_btn_scale_auto" ToolTip="Thiết lập đối tượng theo kích thước, vẫn giữ nguyên tỷ lệ, 1 cạnh có thể lớn hơn kích thước tối đa"/>
                             </StackPanel>
                         </Grid>
                     </Expander>
-                    <Expander VerticalAlignment="Top" IsExpanded="False">
+                    <Expander VerticalAlignment="Top" IsExpanded="True">
                         <Expander.Header>
                             <Run Text="Đổi kích thước theo điều kiện" FontWeight="Bold" />
                         </Expander.Header>
@@ -305,9 +305,9 @@
                             <Label Grid.Column="0" Grid.Row="2" Content="Hướng ngang" />
                             <Label Grid.Column="0" Grid.Row="3" Content="Hướng dọc" />
                             <TextBox Name="sz_al_ori_index" Grid.Column="1" Grid.Row="0" TextWrapping="NoWrap" Text="1" HorizontalContentAlignment="Center" ToolTip="Thứ tự đối tượng (index)" Height="24" Margin="0,0,4,0" VerticalContentAlignment="Center"/>
-                            <Button Name="sz_btn_getIndex2" Grid.Column="2" Grid.Row="0" Content="Get" ToolTip="Lấy thứ tự của đối tượng trong trang" Height="24"/>
+                            <Button Name="sz_btn_getIndex2" Grid.Column="2" Grid.Row="0" Content="Get" ToolTip="Lấy thứ tự của đối tượng trong trang" Height="24" Click="sz_btn_getIndex2_Click"/>
                             <TextBox Name="sz_al_des_index" Grid.Column="1" Grid.Row="1" TextWrapping="NoWrap" Text="2" HorizontalContentAlignment="Center" ToolTip="Thứ tự đối tượng (index)" Height="24" Margin="0,0,4,0" VerticalContentAlignment="Center"/>
-                            <Button Name="sz_btn_getIndex3" Grid.Column="2" Grid.Row="1" Content="Get" ToolTip="Lấy thứ tự của đối tượng trong trang" Height="24"/>
+                            <Button Name="sz_btn_getIndex3" Grid.Column="2" Grid.Row="1" Content="Get" ToolTip="Lấy thứ tự của đối tượng trong trang" Height="24" Click="sz_btn_getIndex3_Click"/>
                             <ComboBox Name="sz_cb_hoz" Grid.Column="1" Grid.Row="2" Height="24" Margin="0,0,4,0" SelectedIndex="0">
                                 <ListBoxItem Content="Canh trái"/>
                                 <ListBoxItem Content="Canh phải"/>
@@ -379,7 +379,7 @@
                         </Expander.Header>
                         <StackPanel Background="White">
                             <CheckBox Content="Đối tượng trong powerclip" Name="crFont_powerclip_chk" HorizontalAlignment="Left" IsChecked="True" Padding="4" Margin="8,8,8,2" VerticalContentAlignment="Center"/>
-                            <Button Click="btn_crackFont_Click" Tag="1" Content="Tất cả" Height="32" Padding="4" Margin="8,8,8,2"/>
+                            <Button Click="btn_crackFont_Click" Tag="1" Content="Tất cả các trang" Height="32" Padding="4" Margin="8,8,8,2"/>
                             <Button Click="btn_crackFont_Click" Tag="2" Content="Trang hiện tại" Height="32" Padding="4" Margin="8,2,8,2"/>
                             <Button Click="btn_crackFont_Click" Tag="3" Content="Đối tượng đang chọn" Height="32" Padding="4" Margin="8,2,8,8"/>
                         </StackPanel>
@@ -412,8 +412,16 @@
 
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Cfont" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="57" Padding="2,1">
-                <Grid Background="#FFE5E5E5"/>
+            <TabItem Header="Info" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="57" Padding="2,1">
+                <StackPanel Background="#FFE5E5E5">
+                    <TextBlock Padding="10" LineHeight="20">
+                        <Bold>Automation After Merge</Bold><LineBreak/>
+                        Author: Bộ Phi Yến<LineBreak/>
+                        Email: lynatts@gmail.com<LineBreak/>
+                        <Separator/>
+                        Copywrite: @Bộ Phi Yến
+                    </TextBlock> 
+                </StackPanel>
             </TabItem>
         </TabControl>
     </Grid>

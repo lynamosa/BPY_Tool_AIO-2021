@@ -93,7 +93,7 @@ namespace BPYmergeTool
             }
         }
 
-        public void Obj_sort(int sType) { 
+        public void Obj_sort(int sType) {
             corelApp.Unit = corel.cdrUnit.cdrMillimeter;
             corel.ShapeRange sRange;
             if (sType == 1)
@@ -124,7 +124,7 @@ namespace BPYmergeTool
             corelApp.EventsEnabled = false;
             int k_direct_type = (st_chk_dr1.IsChecked == true) ? 1 : 0;
             // Code here
-            if(st_chk_pg1.IsChecked == true)
+            if (st_chk_pg1.IsChecked == true)
             {
                 rY = -20;
                 pgSort = false;
@@ -135,7 +135,7 @@ namespace BPYmergeTool
                 rY = float.Parse(corelApp.ActivePage.SizeHeight.ToString());
                 if (sRange.Count / (sX * sY + snX * snY) > corelApp.ActiveDocument.Pages.Count)
                 {
-                    corelApp.ActiveDocument.AddPages((int)(Math.Ceiling(sRange.Count / (sX * sY + snX * snY)))- corelApp.ActiveDocument.Pages.Count);
+                    corelApp.ActiveDocument.AddPages((int)(Math.Ceiling(sRange.Count / (sX * sY + snX * snY))) - corelApp.ActiveDocument.Pages.Count);
                     crPage = 1;
                 }
                 corelApp.ActiveDocument.Pages.First.Activate();
@@ -242,7 +242,7 @@ namespace BPYmergeTool
             List<int> listPage = new List<int>();
             bool isOdd = (bool)lspage2.IsChecked;
             bool isEven = (bool)lspage3.IsChecked;
-            if (pType==1) //Custom page
+            if (pType == 1) //Custom page
             {
                 string patt = @"[^,0-9\-]";
                 string pg = Regex.Replace(st_custom_page.Text, patt, "");
@@ -337,7 +337,7 @@ namespace BPYmergeTool
                 pgSort = true;
                 rY = float.Parse(corelApp.ActivePage.SizeHeight.ToString());
                 corelApp.ActiveDocument.Pages.First.Activate();
-                crPage = corelApp.ActiveDocument.Pages.Last.Index+1;
+                crPage = corelApp.ActiveDocument.Pages.Last.Index + 1;
                 corelApp.ActiveDocument.AddPages((int)(Math.Ceiling(sRange.Count / (sX * sY + snX * snY))));
             }
             if (k_direct_type != 0)
@@ -476,11 +476,11 @@ namespace BPYmergeTool
                 }
 
             } while (count < sRange.Count);
-            if (st_del_after_sort.IsChecked==true)
+            if (st_del_after_sort.IsChecked == true)
             {
                 foreach (corel.Page pg in corelApp.ActiveDocument.Pages)
                 {
-                    if (pg.Shapes.Count<1)
+                    if (pg.Shapes.Count < 1)
                     {
                         pg.Delete();
                     }
@@ -610,7 +610,7 @@ namespace BPYmergeTool
         private void sz_btn_getIndex_Click(object sender, RoutedEventArgs e)
         {
             if (corelApp.ActiveSelection.Shapes.Count != 1)
-                MessageBox.Show("Vui lòng chọn 1 đối tượng", "Lỗi");
+                MessageBox.Show("Vui lòng chọn 1 đối tượng", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
             else
                 sz_obj_Index.Text = corelApp.ActivePage.Shapes.All().IndexOf(corelApp.ActiveSelection.Shapes[1]).ToString();
         }
@@ -619,23 +619,52 @@ namespace BPYmergeTool
         {
             // Chưa code
             corelApp.ActiveDocument.BeginCommandGroup("Auto fix Size");
+            corelApp.ActiveDocument.Unit = corel.cdrUnit.cdrMillimeter;
             corelApp.Optimization = true;
-            corel.ShapeRange sr;
+            corelApp.EventsEnabled = false;
+            int cond_type=1;
+            if (sz_cb_type.SelectedIndex==0)
+            {
+                cond_type = 1;
+            }
+            else if (sz_cb_type.SelectedIndex==1)
+            {
+                cond_type = -1;
+            }
+            else
+            {
+                cond_type = 0;
+            }
+            if (sz_cb_direct.SelectedIndex==0)
+            {
+                corelApp.ActiveDocument.ReferencePoint = corel.cdrReferencePoint.cdrMiddleLeft;
+            }
+            else if (sz_cb_direct.SelectedIndex == 2)
+            {
+                corelApp.ActiveDocument.ReferencePoint = corel.cdrReferencePoint.cdrMiddleRight;
+            }
+            else
+            {
+                corelApp.ActiveDocument.ReferencePoint = corel.cdrReferencePoint.cdrCenter;
+            }
+
             foreach (corel.Page p in corelApp.ActiveDocument.Pages)
             {
-                p.Activate();
-                sr = corelApp.ActivePage.FindShapes("", corel.cdrShapeType.cdrTextShape);
-                sr.ConvertToCurves();
-                foreach (corel.Shape s in corelApp.ActivePage.Shapes.FindShapes(Query: "!@com.powerclip.IsNull"))
+                if (sz_cb_type.SelectedIndex==2 && p.Shapes[int.Parse(sz_obj_Index.Text)].SizeWidth==double.Parse(sz_SizeIf.Text))
                 {
-                    sr = s.PowerClip.Shapes.FindShapes("", corel.cdrShapeType.cdrTextShape);
-                    sr.ConvertToCurves();
+                    p.Shapes[int.Parse(sz_obj_Index.Text)].SizeWidth = double.Parse(sz_obj_newsize.Text);
+                }
+                else if (cond_type!=0 && cond_type*( p.Shapes[int.Parse(sz_obj_Index.Text)].SizeWidth - double.Parse(sz_SizeIf.Text))>0)
+                {
+                    p.Shapes[int.Parse(sz_obj_Index.Text)].SizeWidth = double.Parse(sz_obj_newsize.Text);
                 }
             }
+            corelApp.EventsEnabled = true;
             corelApp.Optimization = false;
             corelApp.ActiveDocument.EndCommandGroup();
             corelApp.Refresh();
-            
+            MessageBox.Show("Finish!");
+
         }
 
         private void sz_att_left_Click(object sender, RoutedEventArgs e)
@@ -762,11 +791,6 @@ namespace BPYmergeTool
             }
         }
 
-        private void sz_att_center_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show(sz_cb_sortType.SelectedIndex.ToString());
-        }
-
         private void btn_crackFont_Click(object sender, RoutedEventArgs e)
         {
             float sType = float.Parse(((Button)e.OriginalSource).Tag.ToString());
@@ -774,25 +798,25 @@ namespace BPYmergeTool
             corelApp.Optimization = true;
             corel.ShapeRange sr;
 
-            if (sType==1)
+            if (sType == 1)
             {
                 foreach (corel.Page p in corelApp.ActiveDocument.Pages)
                 {
                     p.Activate();
                     sr = corelApp.ActivePage.FindShapes("", corel.cdrShapeType.cdrTextShape);
                     sr.ConvertToCurves();
-                    if (crFont_powerclip_chk.IsChecked==false)
+                    if (crFont_powerclip_chk.IsChecked == false)
                     {
                         continue;
                     }
-                    foreach (corel.Shape s in corelApp.ActivePage.Shapes.FindShapes(Query:"!@com.powerclip.IsNull"))
+                    foreach (corel.Shape s in corelApp.ActivePage.Shapes.FindShapes(Query: "!@com.powerclip.IsNull"))
                     {
                         sr = s.PowerClip.Shapes.FindShapes("", corel.cdrShapeType.cdrTextShape);
                         sr.ConvertToCurves();
                     }
                 }
             }
-            else if (sType==2)
+            else if (sType == 2)
             {
                 sr = corelApp.ActivePage.FindShapes("", corel.cdrShapeType.cdrTextShape);
                 sr.ConvertToCurves();
@@ -805,9 +829,9 @@ namespace BPYmergeTool
                     }
                 }
             }
-            else if(corelApp.ActiveSelection.Shapes.Count>0)
+            else if (corelApp.ActiveSelection.Shapes.Count > 0)
             {
-                
+
                 sr = corelApp.ActiveSelection.Shapes.FindShapes("", corel.cdrShapeType.cdrTextShape);
                 sr.ConvertToCurves();
                 if (crFont_powerclip_chk.IsChecked == true)
@@ -826,7 +850,7 @@ namespace BPYmergeTool
 
         private void btn_barcode2vector_Click(object sender, RoutedEventArgs e)
         {
-            if (corelApp.ActiveSelection.Shapes.Count!=1)
+            if (corelApp.ActiveSelection.Shapes.Count != 1)
             {
                 MessageBox.Show("Vui lòng chọn 1 đối tượng");
             }
@@ -916,53 +940,73 @@ namespace BPYmergeTool
         {
             corelApp.ActiveDocument.BeginCommandGroup("Auto Align");
             corelApp.Optimization = true;
-            corel.ShapeRange sr;
+            corelApp.EventsEnabled = false;
+            bool byPassPage = false;
             int rootShape = int.Parse(sz_al_ori_index.Text);
             int moveShape = int.Parse(sz_al_des_index.Text);
-            int alignType = 0;
-            int[] vAlign = { 4, 8, 12 };
-            if (sz_chk_hoz.IsChecked == true)
-            {
-                alignType += (sz_cb_hoz.SelectedIndex + 1);
-            }
-            if (sz_chk_ver.IsChecked == true)
-            {
-                alignType += vAlign[sz_cb_ver.SelectedIndex];
-            }
-            if (alignType==0)
+            corel.cdrAlignType[] HalignShape = {corel.cdrAlignType.cdrAlignLeft, corel.cdrAlignType.cdrAlignRight, corel.cdrAlignType.cdrAlignHCenter};
+            corel.cdrAlignType[] ValignShape = {corel.cdrAlignType.cdrAlignTop, corel.cdrAlignType.cdrAlignBottom, corel.cdrAlignType.cdrAlignVCenter};
+            int Valign = sz_cb_ver.SelectedIndex;
+            int Halign = sz_cb_hoz.SelectedIndex;
+            if ((bool)sz_chk_hoz.IsChecked ==false && (bool)sz_chk_ver.IsChecked == false)
             {
                 MessageBox.Show("Vui lòng chọn kiểu", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             foreach (corel.Page p in corelApp.ActiveDocument.Pages)
             {
-                p.Activate();
-                if (sz_chk_hoz.IsChecked == true)
+                if (rootShape>p.Shapes.Count || moveShape > p.Shapes.Count)
                 {
-                    corelApp.ActiveLayer.Shapes[moveShape].AlignToShape(corel.cdrAlignType.cdrAlignLeft, corelApp.ActiveLayer.Shapes[rootShape]);
+                    if (byPassPage)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        if (MessageBox.Show("Trang" + corelApp.ActivePage.Name + "\nĐối tượng không tồn tại\nBạn có muốn tiếp tục không", "Lỗi đối tượng", MessageBoxButton.YesNo) == MessageBoxResult.No)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            byPassPage = true;
+                            continue;
+                        }
+                    }
+                    
                 }
-                if (sz_chk_ver.IsChecked == true)
+                if ((bool)sz_chk_hoz.IsChecked)
                 {
-                    alignType += vAlign[sz_cb_ver.SelectedIndex];
+                    p.Shapes[moveShape].AlignToShape(HalignShape[Halign], p.Shapes[rootShape]);
                 }
-                if (sz_chk_hoz.IsChecked==true)
+                if ((bool)sz_chk_ver.IsChecked)
                 {
-                    corelApp.ActiveLayer.Shapes[moveShape].AlignToShape(corel.cdrAlignType.cdrAlignLeft, corelApp.ActiveLayer.Shapes[rootShape]);
-                }
-
-                sr = corelApp.ActivePage.FindShapes("", corel.cdrShapeType.cdrTextShape);
-                sr.ConvertToCurves();
-                foreach (corel.Shape s in corelApp.ActivePage.Shapes.FindShapes(Query: "!@com.powerclip.IsNull"))
-                {
-                    sr = s.PowerClip.Shapes.FindShapes("", corel.cdrShapeType.cdrTextShape);
-                    sr.ConvertToCurves();
+                    corelApp.ActiveLayer.Shapes[moveShape].AlignToShape(ValignShape[Valign], corelApp.ActiveLayer.Shapes[rootShape]);
                 }
             }
+
+            //End Code
+            corelApp.EventsEnabled = true;
+            corelApp.Optimization = false;
+            corelApp.ActiveDocument.EndCommandGroup();
+            corelApp.Refresh();
+            MessageBox.Show("Finish");
         }
 
-        private void st_type_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void sz_btn_getIndex2_Click(object sender, RoutedEventArgs e)
         {
+            if (corelApp.ActiveSelection.Shapes.Count != 1)
+                MessageBox.Show("Vui lòng chọn 1 đối tượng", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else
+                sz_al_ori_index.Text = corelApp.ActivePage.Shapes.All().IndexOf(corelApp.ActiveSelection.Shapes[1]).ToString();
+        }
 
+        private void sz_btn_getIndex3_Click(object sender, RoutedEventArgs e)
+        {
+            if (corelApp.ActiveSelection.Shapes.Count != 1)
+                MessageBox.Show("Vui lòng chọn 1 đối tượng", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else
+                sz_al_des_index.Text = corelApp.ActivePage.Shapes.All().IndexOf(corelApp.ActiveSelection.Shapes[1]).ToString();
         }
     }
     public class SortTypeConvert : IValueConverter
